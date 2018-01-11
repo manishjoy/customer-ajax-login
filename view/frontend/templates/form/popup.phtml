@@ -1,0 +1,170 @@
+<?php if(!$block->isLoggedIn()): ?>
+	<div class="login-overlay">
+		<div class="login-register-popup">
+			<div class="response-msg"></div>
+			<div class="login-container">
+				<form class="popup-login-form" method="POST" action="">
+					<div class="container">
+						<label><b><?php echo __('Email') ?></b></label>
+						<input type="email" placeholder="<?php echo __('Enter Email') ?>" name="username" required>
+
+						<label><b><?php echo __('Password') ?></b></label>
+						<input type="password" placeholder="<?php echo __('Enter Password') ?>" name="password" required>
+
+						<button class="action login primary" type="submit"><?php echo __('Login') ?></button>
+						<div class="register-link"><span><?php echo __('New Here?') ?></span>&nbsp;<a href="#"><?php echo __('Register') ?></a></div>
+					</div>
+
+					<div class="container" style="background-color:#f1f1f1">
+						<button title="<?php echo __('Click to close') ?>" type="button" class="cancelbtn"><?php echo __('Cancel') ?></button>
+						<span class="psw"><?php echo __('Forgot') ?> <a href="<?php echo $block->getUrl('customer/account/forgotpassword') ?>"><?php echo __('password') ?>?</a></span>
+					</div>
+				</form>
+			</div>
+			<div class="register-container">
+				<form class="popup-register-form" method="POST" action="">
+					<div class="container">
+						<label><b><?php echo __('First Name') ?></b></label>
+						<input type="text" placeholder="<?php echo __('Enter First Name') ?>" name="firstname" required>
+
+						<label><b><?php echo __('Last Name') ?></b></label>
+						<input type="text" placeholder="<?php echo __('Enter Last Name') ?>" name="lastname" required>
+
+						<label><b><?php echo __('Email') ?></b></label>
+						<input type="email" placeholder="<?php echo __('Enter Email') ?>" name="email" required>
+
+						<label><b><?php echo __('Password') ?></b></label>
+						<input type="password" placeholder="<?php echo __('Enter Password') ?>" name="password" required>
+
+						<label><b><?php echo __('Password') ?></b></label>
+						<input type="password" placeholder="<?php echo __('Confirm Password') ?>" name="password_confirmation" required>
+
+						<button class="action login primary" type="submit"><?php echo __('Sign Up') ?></button>
+
+						<div class="login-link"><span><?php echo __('Already have an Account?') ?></span>&nbsp;<a href="#"><?php echo __('Login') ?></a></div>
+					</div>
+
+					<div class="container" style="background-color:#f1f1f1">
+						<button title="<?php echo __('Click to close') ?>" type="button" class="cancelbtn">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		require(['jquery'], function($) {
+			var headerElem = $('.panel.header');
+			var loginLink = headerElem.find('.authorization-link').children('a');
+			var registerLink = headerElem.find('.authorization-link').next().children('a');
+			var loginOverlay = $('.login-overlay');
+			var loginBox = $('.login-overlay').find('.popup-login-form');
+			var registerBox = $('.login-overlay').find('.popup-register-form');
+			var loginButton = $('.popup-login-form').find('button[type=submit]');
+			var registerButton = $('.popup-register-form').find('button[type=submit]');
+			var loginUrl = "<?php echo $block->getUrl('customerlogin/ajax/login') ?>";
+			var registerUrl = "<?php echo $block->getUrl('customerlogin/ajax/register') ?>";
+
+			// Texts
+			var loginText = "<?php echo __('Login') ?>";
+			var loggingText = "<?php echo __('Please Wait...') ?>";
+
+			var registerText = "<?php echo __('Sign Up') ?>";
+			var registeringText = "<?php echo __('Please Wait...') ?>";
+
+			loginLink.click(function(e){
+				e.preventDefault(e);
+				loginOverlay.show();
+				loginBox.show();
+			});
+
+			registerLink.click(function(e){
+				e.preventDefault(e);
+				loginOverlay.show();
+				registerBox.show();
+			});
+
+			$('.cancelbtn').click(function(){
+				loginOverlay.hide();
+				loginBox.hide();
+				registerBox.hide();
+			});
+
+			$('.login-link a').click(function(e){
+				e.preventDefault(e);
+				loginBox.show();
+				registerBox.hide();
+			});
+
+			$('.register-link a').click(function(e){
+				e.preventDefault(e);
+				loginBox.hide();
+				registerBox.show();
+			});
+
+			$('.popup-login-form').submit(function(){
+				loginButton.text(loggingText);
+				loginButton.attr("disabled", "disabled");
+				var formData = getFormData($(this));
+				$.ajax({
+		            type: "POST",
+		            url: loginUrl,
+		            data: formData,
+		            dataType: "json",
+		            success: function(data) {
+		                showResponse(data);
+		                if(data.errors) {
+		                	loginButton.text(loginText);
+		                	loginButton.removeAttr('disabled');
+		                } else {
+		                	location.reload();
+		                }
+		            }
+		        });
+				return false;
+			});
+
+			$('.popup-register-form').submit(function(){
+				registerButton.text(registeringText);
+				registerButton.attr("disabled", "disabled");
+				var formData = getFormData($(this));
+				$.ajax({
+		            type: "POST",
+		            url: registerUrl,
+		            data: formData,
+		            dataType: "json",
+		            success: function(data) {
+		                showResponse(data);
+		                if(data.errors) {
+		                	registerButton.text(registerText);
+		                	registerButton.removeAttr('disabled');
+		                } else {
+		                	location.reload();
+		                }
+		            }
+		        });
+				return false;
+			});
+
+			function getFormData(formElem){
+			    var unindexed_array = formElem.serializeArray();
+			    var indexed_array = {};
+
+			    jQuery.map(unindexed_array, function(n, i){
+			        indexed_array[n['name']] = n['value'];
+			    });
+
+			    return indexed_array;
+			}
+
+			function showResponse(data) {
+				if(data.errors) {
+					$('.response-msg').html("<div class='error'>"+data.message+"</div>");
+				} else {
+					$('.response-msg').html("<div class='success'>"+data.message+"</div>");
+				}
+				setTimeout(function(){ $('.response-msg').html(null); }, 5000);
+			}
+		});
+	</script>
+<?php endif; ?>

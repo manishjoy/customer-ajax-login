@@ -1,0 +1,131 @@
+@color_1: white;
+@background_color_1: #4CAF50;
+@background_color_2: #f44336;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+	body {
+		position: relative;
+	}
+	.login-overlay {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background: rgba(0, 0, 0, 0.48);
+		z-index: 999;
+		padding: 20px;
+		display: none;
+	}
+	.popup-login-form,
+	.popup-register-form {
+		display: none;
+	}
+	.login-register-popup {
+		max-width: 320px;
+		margin: 0 auto;
+		background: #fff;
+		margin-top: 50px;
+		border: 3px solid #f1f1f1;
+		.response-msg {
+			div {
+			    margin: 5px 16px;
+			    text-align: center;
+			    padding: 5px 0;
+			    border-radius: 3px;
+				&.success {
+				    color: #3c763d;
+				    background-color: #dff0d8;
+				    border-color: #d6e9c6;
+				}
+				&.error {
+					color: #a94442;
+				    background-color: #f2dede;
+				    border-color: #ebccd1;
+				}
+			}
+		}
+		.login-link {
+			margin-top: 10px;
+		}
+		.register-link {
+			margin-top: 10px;
+		}
+		input[type=text], input[type=password], input[type=email] {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			display: inline-block;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+		}
+		button {
+			background-color: @background_color_1;
+			color: @color_1;
+			padding: 14px 20px;
+			margin: 8px 0;
+			border: none;
+			cursor: pointer;
+			width: 100%;
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+		.cancelbtn {
+			width: auto;
+			padding: 10px 18px;
+			background-color: @background_color_2;
+		}
+		.imgcontainer {
+			text-align: center;
+			margin: 24px 0 12px 0;
+		}
+		img.avatar {
+			width: 40%;
+			border-radius: 50%;
+		}
+		.container {
+			padding: 16px;
+		}
+		span.psw {
+			float: right;
+			padding-top: 16px;
+		}
+	}
+}
+
+//
+//  Mobile @screen__m
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    
+}
+
+//
+//  Mobile @screen__s
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .login-register-popup {
+		span.psw {
+			display: block;
+			float: none;
+		}
+		.cancelbtn {
+			width: 100%;
+		}
+	}
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+}

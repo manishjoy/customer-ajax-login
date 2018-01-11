@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+       <add id="ManishJoy_CustomerLogin::customerlogin" title="Login/Signup Popup" module="ManishJoy_CustomerLogin" sortOrder="30" parent="ManishJoy_Core::core" resource="ManishJoy_Core::core" />
+        <add id="ManishJoy_CustomerLogin::customerlogin_manage_config" title="Configuration" module="ManishJoy_CustomerLogin" sortOrder="10" parent="ManishJoy_CustomerLogin::customerlogin" action="adminhtml/system_config/edit/section/customerlogin" resource="ManishJoy_CustomerLogin::manage"/>
+    </menu>
+</config>
