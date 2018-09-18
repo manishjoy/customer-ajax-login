@@ -2,6 +2,7 @@
     "name": "manishjoy/module-customerlogin",
     "description": "free magento 2 extension to login & signup using ajax",
     "type": "magento2-module",
+    "minimum-stability": "stable",
     "version": "1.0.0",
     "license": [
         "OSL-3.0",
